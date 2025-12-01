@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Variable Font Test</title>
+
+<style>
+    @font-face {
+        font-family: "H";
+        src: url("./H.ttf") format("truetype-variations"),
+             url("./H.ttf") format("truetype");
+        font-weight: 100 900; /* اگر فونت variable باشد */
+        font-style: normal;
+    }
+
+    body {
+        font-family: "H", sans-serif;
+        font-weight: 400;
+        padding: 20px;
+        font-size: 32px;
+    }
+
+    .bold {
+        font-weight: 800;
+    }
+
+    .thin {
+        font-weight: 200;
+    }
+
+    .custom {
+        font-variation-settings: "wght" 650;
+    }
+</style>
+
+</head>
+<body>
+
+<h1 class="bold">This is Bold (wght: 800)سلام</h1>
+<p class="thin">This is Thin (wght: 200)</p>
+<p class="custom">This is Custom Weight (wght: 650)</p>
+
+</body>
+</html>
