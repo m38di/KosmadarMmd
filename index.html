@@ -1,42 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa">
 <head>
-<meta charset="UTF-8">
-<title>Variable Font Test</title>
+<meta charset="UTF-8" />
+<title>PNG Export</title>
 
 <style>
     @font-face {
         font-family: "H";
         src: url("./H.ttf") format("truetype-variations"),
              url("./H.ttf") format("truetype");
-        font-weight: 100 900; /* اگر فونت variable باشد */
+        font-weight: 100 900;
         font-style: normal;
     }
 
     body {
-        font-family: "H", sans-serif;
-        font-weight: 400;
+        font-family: "H";
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
         padding: 20px;
-        font-size: 32px;
+        background: #f0f0f0;
     }
 
-    .bold {
-        font-weight: 800;
+    #textInput {
+        width: 100%;
+        font-size: 24px;
+        padding: 10px;
+        direction: rtl;
+        font-family: "H";
     }
 
-    .thin {
-        font-weight: 200;
+    button {
+        padding: 10px 20px;
+        font-size: 18px;
+        cursor: pointer;
     }
 
-    .custom {
-        font-variation-settings: "wght" 650;
-    }
 </style>
-
 </head>
 <body>
 
-<h1 class="bold" style="align: center">ممد مادرتو گاییدم</h1>
+<input id="textInput" placeholder="متن فارسی را بنویسید…" />
+
+<button onclick="renderPNG()">دانلود PNG با بکگراند شفاف</button>
+
+<canvas id="canvas" style="display:none;"></canvas>
+
+<script>
+function renderPNG() {
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    const text = document.getElementById("textInput").value || "متن نمونه";
+
+    ctx.font = "64px H";
+    ctx.direction = "rtl";
+
+    // اندازه‌گیری متن
+    const metrics = ctx.measureText(text);
+    const width = metrics.width + 40;
+    const height = 120;
+
+    canvas.width = width;
+    canvas.height = height;
+
+    // دوباره تنظیم فونت بعد از تغییر اندازه Canvas
+    ctx.font = "64px H";
+    ctx.direction = "rtl";
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // شفاف نگه می‌دارد
+    ctx.fillStyle = "black";
+    ctx.fillText(text, width - 20, 80);
+
+    // ساخت لینک دانلود
+    const link = document.createElement("a");
+    link.download = "text.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+}
+</script>
 
 </body>
 </html>
