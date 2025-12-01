@@ -2,7 +2,7 @@
 <html lang="fa">
 <head>
 <meta charset="UTF-8" />
-<title>PNG Centered</title>
+<title>Perfect Center</title>
 
 <style>
     @font-face {
@@ -12,20 +12,18 @@
         font-weight: 100 900;
         font-style: normal;
     }
-
     body {
         font-family: "H";
         padding: 20px;
         background: #ddd;
         direction: rtl;
     }
-
     #textInput {
         width: 100%;
-        font-size: 24px;
+        font-size: 22px;
         padding: 10px;
-        font-family: "H";
         direction: rtl;
+        font-family: "H";
     }
 </style>
 </head>
@@ -34,7 +32,7 @@
 
 <input id="textInput" placeholder="متن فارسی…" />
 
-<button onclick="makePNG()">دانلود PNG وسط‌چین</button>
+<button onclick="makePNG()">دانلود PNG وسط‌چین واقعی</button>
 
 <canvas id="canvas" width="1024" height="1024" style="display:none;"></canvas>
 
@@ -43,9 +41,8 @@ function makePNG() {
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
 
-    const text = document.getElementById("textInput").value || "متن وسط‌چین";
+    const text = document.getElementById("textInput").value || "متن وسط";
 
-    // پاک کردن
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // تنظیمات بولد
@@ -53,20 +50,18 @@ function makePNG() {
     ctx.fillStyle = "black";
     ctx.textBaseline = "middle";
 
-    // اندازه‌گیری متن واقعی
-    const metrics = ctx.measureText(text);
-    const textWidth = metrics.width;
+    // اندازه‌گیری واقعی
+    const m = ctx.measureText(text);
 
-    // محاسبهٔ مرکز
-    const x = canvas.width / 2 - textWidth / 2;
+    const realWidth = m.actualBoundingBoxLeft + m.actualBoundingBoxRight;
+
+    const x = (canvas.width / 2) - (realWidth / 2) + m.actualBoundingBoxLeft;
     const y = canvas.height / 2;
 
-    // نوشتن بدون textAlign (برای RTL دقیق‌تره)
     ctx.fillText(text, x, y);
 
-    // دانلود
     const link = document.createElement("a");
-    link.download = "centered.png";
+    link.download = "perfect_center.png";
     link.href = canvas.toDataURL("image/png");
     link.click();
 }
