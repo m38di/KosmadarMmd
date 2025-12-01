@@ -2,7 +2,7 @@
 <html lang="fa">
 <head>
 <meta charset="UTF-8" />
-<title>PNG 1024</title>
+<title>PNG Centered</title>
 
 <style>
     @font-face {
@@ -15,34 +15,26 @@
 
     body {
         font-family: "H";
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
         padding: 20px;
-        background: #e0e0e0;
+        background: #ddd;
+        direction: rtl;
     }
 
     #textInput {
         width: 100%;
         font-size: 24px;
         padding: 10px;
-        direction: rtl;
         font-family: "H";
-    }
-
-    button {
-        padding: 10px 20px;
-        font-size: 18px;
-        cursor: pointer;
+        direction: rtl;
     }
 </style>
 </head>
 
 <body>
 
-<input id="textInput" placeholder="متن فارسی را بنویس…" />
+<input id="textInput" placeholder="متن فارسی…" />
 
-<button onclick="makePNG()">دانلود PNG 1024×1024</button>
+<button onclick="makePNG()">دانلود PNG وسط‌چین</button>
 
 <canvas id="canvas" width="1024" height="1024" style="display:none;"></canvas>
 
@@ -51,22 +43,30 @@ function makePNG() {
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
 
-    const text = document.getElementById("textInput").value || "متن بولد";
+    const text = document.getElementById("textInput").value || "متن وسط‌چین";
 
-    // تنظیمات متن بولد
+    // پاک کردن
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // تنظیمات بولد
     ctx.font = "bold 96px H";
-    ctx.direction = "rtl";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
     ctx.fillStyle = "black";
+    ctx.textBaseline = "middle";
 
-    // نوشتن وسط PNG
-    ctx.fillText(text, canvas.width / 2 + 350, canvas.height / 2);
+    // اندازه‌گیری متن واقعی
+    const metrics = ctx.measureText(text);
+    const textWidth = metrics.width;
 
-    // ساخت لینک دانلود
+    // محاسبهٔ مرکز
+    const x = canvas.width / 2 - textWidth / 2;
+    const y = canvas.height / 2;
+
+    // نوشتن بدون textAlign (برای RTL دقیق‌تره)
+    ctx.fillText(text, x, y);
+
+    // دانلود
     const link = document.createElement("a");
-    link.download = "output.png";
+    link.download = "centered.png";
     link.href = canvas.toDataURL("image/png");
     link.click();
 }
